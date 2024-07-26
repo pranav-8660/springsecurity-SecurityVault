@@ -1,13 +1,13 @@
 package com.pranavv51.microservices.springsecurity.spring_security_driver.controller;
 
 
+import com.pranavv51.microservices.springsecurity.spring_security_driver.model.UserCredentials;
 import com.pranavv51.microservices.springsecurity.spring_security_driver.service.PasswordService;
-import com.pranavv51.microservices.springsecurity.spring_security_driver.service.UserDetailsmanagerUd;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@Controller
 public class SecurityControler {
 
     private final PasswordService passwordServiceInst;
@@ -26,19 +26,20 @@ public class SecurityControler {
     // http://localhost:8080/user/dashboard
     @GetMapping("user/dashboard")
     public String sayHellouser(){
-        return "hi";
+        return "userpage";
     }
 
     @GetMapping("admin/control-board")
-    @ResponseBody
-    public ResponseEntity<String> sayHelloadmin(){
-        return ResponseEntity.ok("HI, hello admin!");
+    public String sayHelloadmin(){
+        return "adminpage";
     }
 
 
-    @PostMapping(value = "user/register/")
-    public void registerUser(@RequestBody UserDetailsmanagerUd userCred){
-        
+
+    // http://localhost:8745/user/register/
+    @PostMapping(value = "register/")
+    public String registerUser(@RequestBody UserCredentials userCred){
+        return passwordServiceInst.saveUsersCredentials(userCred);
     }
 
 }

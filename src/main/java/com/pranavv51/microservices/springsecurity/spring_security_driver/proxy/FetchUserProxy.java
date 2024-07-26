@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface FetchUserProxy {
 
     // http://localhost:8950/rds-driver/fetch-user-cred/{}
-    @GetMapping(value = "rds-driver/fetch-user-cred/{uname}")
+    @GetMapping(value = "rds-driverApp/fetch-user-cred/{uname}")
     public UserCredentials fetchUser(@PathVariable("uname") String username);
 }

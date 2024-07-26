@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -60,13 +61,15 @@ public class SecurityConfigClass {
     @Bean
     public SecurityFilterChain allsecurityFilters(HttpSecurity httpSecurity) throws Exception {
 
-        httpSecurity.authorizeHttpRequests(
-                registry->{
-                    registry.requestMatchers("home/**").permitAll();
-                    registry.requestMatchers("users/**").hasRole("USER");
-                    registry.requestMatchers("admin/**").hasRole("ADMIN");
-                    registry.anyRequest().authenticated();
-                }
+        httpSecurity
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(
+                    registry->{
+                        registry.requestMatchers("home/**","register/").permitAll();
+                        registry.requestMatchers("users/**").hasRole("USER");
+                        registry.requestMatchers("admin/**").hasRole("ADMIN");
+                        registry.anyRequest().authenticated();
+                    }
         ).formLogin(temp->temp.permitAll());
 
         return httpSecurity.build();
